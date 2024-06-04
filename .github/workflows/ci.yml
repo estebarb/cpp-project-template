@@ -32,6 +32,8 @@ jobs:
         steps:
             - name: Check out code
               uses: actions/checkout@v4
+            - name: Install dependencies
+              run: sudo apt-get install gcovr
             - name: Configure
               run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCOVERAGE=ON
             - name: Build
