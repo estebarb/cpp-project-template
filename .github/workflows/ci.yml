@@ -7,7 +7,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Check out code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
             - name: Set up clang-format
               run: sudo apt-get install clang-format
             - name: Run clang-format
@@ -18,9 +18,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Check out code
-              uses: actions/checkout@v2
-            - name: Set up CMake
-              uses: actions/setup-cmake@v1
+              uses: actions/checkout@v4
             - name: Configure
               run: cmake -B build -S .
             - name: Build
@@ -33,9 +31,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Check out code
-              uses: actions/checkout@v2
-            - name: Set up CMake
-              uses: actions/setup-cmake@v1
+              uses: actions/checkout@v4
             - name: Configure
               run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCOVERAGE=ON
             - name: Build
