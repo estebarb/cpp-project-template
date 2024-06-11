@@ -27,6 +27,30 @@ jobs:
               run: |
                 cd build
                 ctest --output-on-failure
+    infer:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v4
+            - name: Install dependencies
+              run: VERSION=1.1.0; curl -sSL "https://github.com/facebook/infer/releases/download/v$VERSION/infer-linux64-v$VERSION.tar.xz" | sudo tar -C /opt -xJ && sudo ln -s "/opt/infer-linux64-v$VERSION/bin/infer" /usr/local/bin/infer
+            - name: Configure
+              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG
+            - name: Build
+              run: cmake --build build
+            - name: Run infer
+              run: |
+                cd build
+                infer run -- make
+    cppcheck:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v4
+            - name: Install dependencies
+              run: sudo apt-get install cppcheck
+            - name: Run cppcheck
+              run: cppcheck --enable=all --error-exitcode=1 --includes-file=./include/ --language=c++ --std=c++11 -i src/CMakelists.txt src/*
     valgrind:
         runs-on: ubuntu-latest
         steps:
