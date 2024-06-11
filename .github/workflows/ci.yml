@@ -106,3 +106,23 @@ jobs:
               with:
                 name: coverage
                 path: build/coverage_html
+    clang-analyzer:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v4
+            - name: Install dependencies
+              run: sudo apt-get install clang-analyzer
+            - name: Configure
+              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG
+            - name: Build
+              run: cmake --build build
+            - name: Run clang-analyzer
+              run: |
+                cd build
+                scan-build make -o clang_analyzer_report
+            - name: Upload clang-analyzer report
+              uses: actions/upload-artifact@v4
+              with:
+                name: clang-analyzer-report
+                path: build/clang_analyzer_report
