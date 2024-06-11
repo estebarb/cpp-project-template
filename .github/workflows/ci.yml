@@ -112,7 +112,7 @@ jobs:
             - name: Check out code
               uses: actions/checkout@v4
             - name: Install dependencies
-              run: sudo apt-get install clang-analyzer
+              run: sudo apt-get install clang-tools
             - name: Configure
               run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG
             - name: Build
