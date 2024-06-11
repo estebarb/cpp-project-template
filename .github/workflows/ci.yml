@@ -50,7 +50,7 @@ jobs:
             - name: Install dependencies
               run: sudo apt-get install cppcheck
             - name: Run cppcheck
-              run: cppcheck --enable=all --suppress=missingIncludeSystem --supress=syntaxError --error-exitcode=1 --includes-file=./include/ --language=c++ --std=c++11 -i src/CMakeLists.txt -i tests/CMakeLists.txt src/* test/*
+              run: cppcheck --enable=all --suppress=missingIncludeSystem --suppress=syntaxError --error-exitcode=1 --includes-file=./include/ --language=c++ --std=c++11 -i src/CMakeLists.txt -i tests/CMakeLists.txt src/* test/*
     valgrind:
         runs-on: ubuntu-latest
         steps:
