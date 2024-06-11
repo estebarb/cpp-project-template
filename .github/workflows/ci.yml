@@ -20,7 +20,7 @@ jobs:
             - name: Check out code
               uses: actions/checkout@v4
             - name: Configure
-              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG
+              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG 
             - name: Build
               run: cmake --build build
             - name: Test
@@ -32,6 +32,8 @@ jobs:
         steps:
             - name: Check out code
               uses: actions/checkout@v4
+            - name: Install dependencies
+              run: sudo apt-get install valgrind
             - name: Configure
               run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG
             - name: Build
