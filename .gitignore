@@ -54,3 +54,6 @@ build/
 
 # Otros
 .DS_Store
+
+# infer
+infer-out/
