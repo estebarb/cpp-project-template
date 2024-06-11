@@ -24,6 +24,8 @@ set(TESTFILES
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
 include(FetchContent)
 FetchContent_Declare(
     googletest

@@ -1,6 +1,6 @@
 name: CI
 
-on: [push, pull_request, merge_group]
+on: [pull_request, merge_group]
 
 jobs:
     format:
@@ -20,14 +20,25 @@ jobs:
             - name: Check out code
               uses: actions/checkout@v4
             - name: Configure
-              run: cmake -B build -S .
+              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG
             - name: Build
               run: cmake --build build
             - name: Test
               run: |
                 cd build
                 ctest --output-on-failure
-    code-coverage:
+    valgrind:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v4
+            - name: Configure
+              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG
+            - name: Build
+              run: cmake --build build
+            - name: Run valgrind
+              run: valgrind --leak-check=full --error-exitcode=1 ./build/test
+    code-coverage-xml:
         runs-on: ubuntu-latest
         steps:
             - name: Check out code
@@ -35,7 +46,7 @@ jobs:
             - name: Install dependencies
               run: sudo apt-get install gcovr
             - name: Configure
-              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug -DCOVERAGE=ON
+              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG -DCOVERAGE=ON
             - name: Build
               run: cmake --build build
             - name: Test
@@ -43,7 +54,27 @@ jobs:
                 cd build
                 make
                 make coverage_xml
+    code-coverage-html:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v4
+            - name: Install dependencies
+              run: sudo apt-get install gcovr
+            - name: Configure
+              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG -DCOVERAGE=ON
+            - name: Build
+              run: cmake --build build
+            - name: Test
+              run: |
+                cd build
+                make
                 make coverage_html
+    upload-coverage:
+        runs-on: ubuntu-latest
+        if: success() || failure()
+        needs: [code-coverage-xml, code-coverage-html]
+        steps:
             - name: Upload coverage
               uses: actions/upload-artifact@v4
               with:

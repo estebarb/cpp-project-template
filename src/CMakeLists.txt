@@ -4,6 +4,8 @@ set(TARGET_NAME hello_world)
 
 project(${TARGET_NAME})
 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 
 set(SOURCES
