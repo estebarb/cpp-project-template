@@ -41,7 +41,7 @@ enable_testing()
 
 
 
-set(TEST_MAIN unit_tests)   # Default name for test executable (change if you wish).
+set(TEST_MAIN unit_tests)   # Default name for test executable. DO NOT CHANGE, otherwise you must update ci.yml
 set(TEST_RUNNER_PARAMS "")  # Any arguemnts to feed the test runner (change as needed).
 
 # Se define un ejecutable de pruebas "calculadora_test",
