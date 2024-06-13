@@ -1,5 +1,7 @@
 # README
 
+[![CI](https://github.com/estebarb/cpp-project-template/actions/workflows/ci.yml/badge.svg)](https://github.com/estebarb/cpp-project-template/actions/workflows/ci.yml)
+
 Esta plantilla sirve para crear proyectos en C++ que utilicen CMake como sistema de construcción.
 Incluye las siguientes características:
 
