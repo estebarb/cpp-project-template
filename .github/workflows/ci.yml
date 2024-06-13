@@ -5,6 +5,7 @@ on: [pull_request, merge_group]
 jobs:
     format:
         runs-on: ubuntu-latest
+        timeout-minutes: 5
         steps:
             - name: Check out code
               uses: actions/checkout@v4
@@ -16,11 +17,12 @@ jobs:
               run: git diff --exit-code
     build:
         runs-on: ubuntu-latest
+        timeout-minutes: 5
         steps:
             - name: Check out code
               uses: actions/checkout@v4
             - name: Configure
-              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG 
+              run: cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG
             - name: Build
               run: cmake --build build
             - name: Test
@@ -29,6 +31,7 @@ jobs:
                 ctest --output-on-failure
     infer:
         runs-on: ubuntu-latest
+        timeout-minutes: 5
         steps:
             - name: Check out code
               uses: actions/checkout@v4
@@ -44,6 +47,7 @@ jobs:
                 infer run -- make
     cppcheck:
         runs-on: ubuntu-latest
+        timeout-minutes: 5
         steps:
             - name: Check out code
               uses: actions/checkout@v4
@@ -53,6 +57,7 @@ jobs:
               run: cppcheck --enable=all --suppress=missingIncludeSystem --suppress=syntaxError --error-exitcode=1 --includes-file=./include/ --language=c++ --std=c++11 -i src/CMakeLists.txt -i tests/CMakeLists.txt src/* test/*
     valgrind:
         runs-on: ubuntu-latest
+        timeout-minutes: 5
         steps:
             - name: Check out code
               uses: actions/checkout@v4
@@ -82,6 +87,7 @@ jobs:
                 make coverage_xml
     code-coverage-html:
         runs-on: ubuntu-latest
+        timeout-minutes: 5
         steps:
             - name: Check out code
               uses: actions/checkout@v4
@@ -98,6 +104,7 @@ jobs:
                 make coverage_html
     upload-coverage:
         runs-on: ubuntu-latest
+        timeout-minutes: 5
         if: success() || failure()
         needs: [code-coverage-xml, code-coverage-html]
         steps:
@@ -108,6 +115,7 @@ jobs:
                 path: build/coverage_html
     clang-analyzer:
         runs-on: ubuntu-latest
+        timeout-minutes: 5
         steps:
             - name: Check out code
               uses: actions/checkout@v4
