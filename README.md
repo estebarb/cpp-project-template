@@ -5,6 +5,59 @@ Incluye las siguientes características:
 
 - Compilación de código C++ usando CMake
 - Pruebas unitarias con Google Test
+- Análisis estático de código con Clang Analyzer, Infer y Cppcheck
+- Reporte de cobertura de pruebas con gcovr
+- Formateo de código con clang-format
+- Integración continua con GitHub Actions
+
+## Estructura del proyecto
+El proyecto está estructurado de la siguiente manera:
+
+- `src`: Código fuente de la aplicación
+- `include`: Archivos de cabecera de la aplicación
+- `tests`: Código fuente de las pruebas unitarias
+- `.github/workflows`: Configuración de GitHub Actions, que es usado para la integración continua. En este archivo se definen los pasos que se ejecutan cada vez que se hace un push a una rama.
+
+## Metodología de trabajo
+Esta plantilla está pensada para trabajar con una metodología de desarrollo basada en ramas. La idea es que cada vez que se quiera agregar una nueva funcionalidad, se cree una rama a partir de la rama `main`, y una vez que la funcionalidad esté terminada, se haga un pull request a la rama `main`. De esta manera, se pueden hacer revisiones de código antes de mergear los cambios a la rama principal. Los pasos a seguir son los siguientes:
+
+1. Crear una rama a partir de la rama `main`:
+
+```bash
+# Cambiarse a la rama main
+git checkout main
+
+# Actualizar la rama main con los cambios más recientes
+git fetch
+git pull
+
+# Crear una rama nueva a partir de la rama main
+# Se recomienda que usen un formato autor/funcionalidad
+git switch -c nombre-de-la-rama
+```
+
+2. Hacer los cambios necesarios en la rama creada. Procuren que sean cambios PEQUEÑOS y que tengan sus respectivas pruebas unitarias.
+
+3. Una vez que hayan terminado de hacer los cambios, hacer un commit y subir los cambios a GitHub:
+
+```bash
+# Agregar los archivos que se cambiaron
+git add archivos-cambiados
+
+# Hacer el commit: procuren usar un título y mensaje descriptivo. Por ejemplo, eviten mensajes como "Cambios" o "arreglos".
+# Un buen título de un commit describe de manera corta y concisa los cambios que se hicieron.
+# Un buen mensaje de commit describe de manera detallada los cambios que se hicieron y por qué se hicieron.
+git commit
+
+# Subir los cambios a GitHub
+git push --set-upstream origin nombre-de-la-rama
+```
+
+4. Una vez que hayan subido los cambios a GitHub, ir a la página del repositorio y hacer un pull request a la rama `main`. En el pull request, se pueden hacer comentarios sobre los cambios que se hicieron, y se pueden pedir revisiones a otros miembros del equipo. También podrán ver los resultados de las verificaciones automáticas que se hacen con GitHub Actions.
+
+5. En caso de que deba hacer cambios adicionales, háganlos en la misma rama y suban los cambios a GitHub. Los cambios se van a reflejar automáticamente en el pull request. Para esto no es necesario cerrar el pull request y abrir uno nuevo. Simplemente vaya a su rama (`git checkout nombre-de-la-rama`), haga los cambios necesarios, haga un commit (use `git add` y `git commit` según corresponda) y suba los cambios a GitHub (con `git push`).
+
+6. Una vez que el pull request haya sido aprobado por los miembros del equipo y haya pasado todas las verificaciones, se puede hacer el merge a la rama `main`. Para esto, simplemente haga clic en el botón "Merge pull request" en la página del pull request.
 
 ## Cómo compilar
 
@@ -49,12 +102,16 @@ make coverage_html
 Luego pueden abrir el archivo index.html que se encuentra en la carpeta coverage (build/coverage_html/index.html), para
 ver el reporte de coverage.
 
-# Dependencias
+## Dependencias
 
 Esta plantilla tiene las siguientes dependencias:
 
 - cmake
 - gcovr
+- clang-format
+- clang-tools
+- cppcheck
+- google-test
 
 Para instalarlas en Ubuntu, ejecuta el siguiente comando:
 
@@ -68,7 +125,7 @@ Para instalarlas en MacOS, ejecuta el siguiente comando:
 brew install cmake gcovr
 ```
 
-# clang-format
+## clang-format
 Esta plantilla incluye un estilo predefinido de clang-format, basado en el estilo de Google. Este se encuentra en el archivo .clang-format. Para formatear el código, ejecutar el siguiente comando:
 
 ```bash
@@ -77,7 +134,25 @@ Esta plantilla incluye un estilo predefinido de clang-format, basado en el estil
 
 Es importante destacar que dicho comando solamente va a funcionar en sistemas Unix, como Linux o MacOS.
 
-# Infer
+## Clang Analyzer
+Clang Analyzer es una herramienta de análisis estático de código que permite encontrar errores en el código fuente. Para instalarlo, ejecuta los siguientes comandos:
+
+```bash
+sudo apt-get install clang-tools
+```
+
+Y para ejecutar Clang Analyzer, ejecuta el siguiente comando:
+
+```bash
+cmake -B build -S . -DCMAKE_BUILD_TYPE=DEBUG
+cmake --build build
+cd build
+scan-build make -o clang_analyzer_report
+```
+
+El reporte de Clang Analyzer se va a encontrar en la carpeta build/clang_analyzer_report.
+
+## Infer
 Infer es una herramienta de análisis estático de código que permite encontrar errores en el código fuente. Para instalarlo, ejecuta los siguientes comandos:
 
 ```bash
@@ -93,7 +168,7 @@ cd build
 infer run -- make
 ```
 
-# cppcheck
+## cppcheck
 Cppcheck es una herramienta de análisis estático de código que permite encontrar errores en el código fuente. Para instalarlo, ejecuta los siguientes comandos:
 
 ```bash
